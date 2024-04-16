@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <h1>Result</h1>
+    <p>Text Input: {{ text_input }}</p>
+    <form action="/submit" method="post">
+        <label for="text_input">Text Input:</label>
+        <input type="text" id="text_input" name="text_input" required>
+        <h2>Channels</h2>
+        <ul>
+            {% for channel in channels %}
+                <li>
+                    <input type="checkbox" id="{{ channel.name }}" name="selected_channels" value="{{ channel.name }}">
+                    <label for="{{ channel.name }}">{{ channel.name }}: </label>
+                    <audio controls><source src="{{ url_for('static', filename='wav_files/' + channel.file) }}" type="audio/wav"></audio>
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
