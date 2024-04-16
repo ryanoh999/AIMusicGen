@@ -15,13 +15,14 @@
                 <li>
                     <input type="checkbox" id="{{ channel.name }}" name="selected_channels" value="{{ channel.name }}">
                     <label for="{{ channel.name }}">{{ channel.name }}: </label>
-                    <audio controls><source src="{{ url_for('static', filename='wav_files/' + channel.file) }}" type="audio/wav"></audio>
+                    <audio src="{{ url_for('static', filename='wav_files/' + channel.file) }}" controls></audio>
                     <button type="button" class="concatenate">Concatenate</button>
                     <button type="button" class="delete-channel">Delete</button>
                 </li>
             {% endfor %}
         </ul>
         <button type="button" id="add-channel">Add Channel</button>
+        <button type="button" id="play-all">Play All</button>
         <input type="submit" value="Submit">
     </form>
 
@@ -34,11 +35,18 @@
                 newChannelItem.innerHTML = `
                     <input type="checkbox" id="${newChannelName}" name="selected_channels" value="${newChannelName}">
                     <label for="${newChannelName}">${newChannelName}: </label>
-                    <audio controls><source src=""></audio>
-                    <button type="button" class="concatenate">+</button>
+                    <audio src="" controls></audio>
+                    <button type="button" class="concatenate">Concatenate</button>
                     <button type="button" class="delete-channel">Delete</button>`;
                 channelsList.appendChild(newChannelItem);
             }
+        });
+
+        document.getElementById('play-all').addEventListener('click', function() {
+            var audioElements = document.querySelectorAll('audio');
+            audioElements.forEach(function(audio) {
+                audio.play();
+            });
         });
 
         document.addEventListener('click', function(e) {
@@ -46,9 +54,9 @@
                 e.target.parentElement.remove();
             } else if (e.target && e.target.classList.contains('concatenate')) {
                 var audio = e.target.parentElement.querySelector('audio');
-                var src = audio.querySelector('source').getAttribute('src');
+                var src = audio.getAttribute('src');
                 var concatenatedSrc = src + '+' + src;
-                audio.querySelector('source').setAttribute('src', concatenatedSrc);
+                audio.setAttribute('src', concatenatedSrc);
                 audio.load();
             }
         });
