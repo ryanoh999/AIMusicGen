@@ -9,19 +9,57 @@
     <h1>Result</h1>
     <p>Text Input: {{ text_input }}</p>
     <form action="/submit" method="post">
-        <label for="text_input">Text Input:</label>
-        <input type="text" id="text_input" name="text_input" required>
         <h2>Channels</h2>
-        <ul>
+        <ul id="channels-list">
             {% for channel in channels %}
                 <li>
                     <input type="checkbox" id="{{ channel.name }}" name="selected_channels" value="{{ channel.name }}">
                     <label for="{{ channel.name }}">{{ channel.name }}: </label>
-                    <audio controls><source src="{{ url_for('static', filename='wav_files/' + channel.file) }}" type="audio/wav"></audio>
+                    <audio src="{{ url_for('static', filename='wav_files/' + channel.file) }}" controls></audio>
+                    <button type="button" class="concatenate">Concatenate</button>
+                    <button type="button" class="delete-channel">Delete</button>
                 </li>
             {% endfor %}
         </ul>
+        <button type="button" id="add-channel">Add Channel</button>
+        <button type="button" id="play-all">Play All</button>
         <input type="submit" value="Submit">
     </form>
+
+    <script>
+        document.getElementById('add-channel').addEventListener('click', function() {
+            var channelsList = document.getElementById('channels-list');
+            var newChannelName = prompt('Enter the name of the new channel:');
+            if (newChannelName) {
+                var newChannelItem = document.createElement('li');
+                newChannelItem.innerHTML = `
+                    <input type="checkbox" id="${newChannelName}" name="selected_channels" value="${newChannelName}">
+                    <label for="${newChannelName}">${newChannelName}: </label>
+                    <audio src="" controls></audio>
+                    <button type="button" class="concatenate">Concatenate</button>
+                    <button type="button" class="delete-channel">Delete</button>`;
+                channelsList.appendChild(newChannelItem);
+            }
+        });
+
+        document.getElementById('play-all').addEventListener('click', function() {
+            var audioElements = document.querySelectorAll('audio');
+            audioElements.forEach(function(audio) {
+                audio.play();
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('delete-channel')) {
+                e.target.parentElement.remove();
+            } else if (e.target && e.target.classList.contains('concatenate')) {
+                var audio = e.target.parentElement.querySelector('audio');
+                var src = audio.getAttribute('src');
+                var concatenatedSrc = src + '+' + src;
+                audio.setAttribute('src', concatenatedSrc);
+                audio.load();
+            }
+        });
+    </script>
 </body>
 </html>
