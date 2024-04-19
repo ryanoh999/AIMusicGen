@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import WaveformEditor from './Components/Waveformeditor';
+import WaveSurferComponent from './Components/Waveform'; // Assuming you rename the first component file to WaveSurferComponent.js
 
 function App() {
     const [textInput, setTextInput] = useState('');
@@ -34,14 +34,12 @@ function App() {
         <div>
             <h1>Result</h1>
             <p>Text Input: {textInput}</p>
-            <form action="/submit" method="post">
+
                 <h2>Channels</h2>
                 <ul id="channels-list">
                     {channels.map((channel, index) => (
                         <li key={index}>
-                            <input type="checkbox" id={channel.name} name="selected_channels" value={channel.name} />
-                            <label htmlFor={channel.name}>{channel.name}: </label>
-                            <audio src={channel.file} controls></audio>
+                            <WaveSurferComponent url={channel.file} />
                             <button type="button" onClick={() => handleConcatenate(index)}>Concatenate</button>
                             <button type="button" onClick={() => handleDeleteChannel(index)}>Delete</button>
                         </li>
@@ -50,10 +48,11 @@ function App() {
                 <button type="button" onClick={handleAddChannel}>Add Channel</button>
                 <button type="button" onClick={handlePlayAll}>Play All</button>
                 <input type="submit" value="Submit" />
-            </form>
+            
             
         </div>
     );
 }
-//<WaveformEditor wavFiles={['Hako sample.wav', 'pierre hawk.wav']} />
+
 export default App;
+//            <form action="/submit" method="post"> //</form>

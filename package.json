@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@wavesurfer/react": "^1.0.5",
     "axios": "^1.6.8",
     "playbook-ui": "^13.24.0",
     "react": "^18.2.0",
+    "react-icons": "^5.1.0",
     "react-wavesurfer": "^0.8.6",
     "wavesurfer.js": "^7.7.11"
   }
