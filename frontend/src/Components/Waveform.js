@@ -6,67 +6,51 @@ import {
   BsSkipForward,
   BsSkipBackward,
 } from "react-icons/bs";
+import '../App.css';
 
-export default function App() {
-  const waveformRef = useRef(null);
-  let wavesurfer;
-  const [playPause, setPlayPause] = useState();
-  const [textInput, setTextInput] = useState('');
-  const [channels, setChannels] = useState([]);
+const WaveSurferComponent = ({ url }) => {
+    const waveformRef = useRef(null);
+    let wavesurfer;
+    const [playPause, setPlayPause] = useState();
+    const [textInput, setTextInput] = useState('');
+    const [channels, setChannels] = useState([]);
 
-  const handleAddChannel = () => {
-      const newChannelName = prompt('Enter the name of the new channel:');
-      if (newChannelName) {
-          const filePath = prompt('Enter the file name of the WAV file (e.g., channel1.wav):');
-          if (filePath) {
-              setChannels(prevChannels => [
-                  ...prevChannels,
-                  { name: newChannelName, file: '/wav_files/' + filePath }
-              ]);
+
+    useEffect(() => {
+      if (url) {
+        wavesurfer = WaveSurfer.create({
+          container: waveformRef.current,
+          waveColor: "#34374B",
+          progressColor: "#F90",
+          url: url,
+          dragToSeek: true,
+          //width: "35vw",
+          hideScrollbar: true,
+          //normalize: true,
+          barGap: 1,
+          height: 60,
+          barHeight: 3,
+          barRadius: 100,
+          barWidth: 3,
+        });
+
+        wavesurfer.on("finish", () => {
+          console.log("song finished");
+        });
+
+        wavesurfer.on("ready", () => {
+          console.log("Waveform is ready");
+        });
+
+        return () => {
+          if (wavesurfer) {
+            wavesurfer.destroy();
           }
+        };
       }
-  };
+  }, [url]);
 
-  const handleDeleteChannel = (index) => {
-      setChannels(prevChannels => prevChannels.filter((channel, i) => i !== index));
-  };
-
-  const handleConcatenate = (index) => {
-      // Implement concatenation logic here
-  };
-
-  const handlePlayAll = () => {
-      // Implement play all logic here
-  };
-
-  useEffect(() => {
-    wavesurfer = WaveSurfer.create({
-      container: waveformRef.current,
-      waveColor: "#34374B",
-      progressColor: "#F90",
-      url: "/wav_files/Hako sample.wav",
-      dragToSeek: true,
-      width: "35vw",
-      hideScrollbar: true,
-      normalize: true,
-      barGap: 1,
-      height: 60,
-      //barHeight: 20,
-      barRadius: 20,
-      barWidth: 3,
-    });
-
-    wavesurfer.on("finish", () => {
-      console.log("song finished");
-    });
-
-    wavesurfer.on("ready", () => {
-      console.log("Waveform is ready");
-    });
-    return () => {
-      wavesurfer.destroy();
-    };
-  }, []);
+  
   const handleStop = () => {
     if (wavesurfer) {
       wavesurfer.stop();
@@ -93,24 +77,25 @@ export default function App() {
     
     <div className="container">
       <div className="sub-container">
-        <p>Oceans</p>
 
         <div ref={waveformRef} className="wavesurfer-container" />
         <div className="wavesurfer-controls">
-          <button onClick={handleSkipBack}>
+          <button className="transparent-button" type="button" onClick={handleSkipBack}>
             <BsSkipBackward />
           </button>
-          <button onClick={handlePause}>
+          <button className="transparent-button" type="button" onClick={handlePause}>
             <BsFillPlayFill />
           </button>
-          <button onClick={handleStop}>
+          <button className="transparent-button" type="button" onClick={handleStop}>
             <BsFillStopFill />
           </button>
-          <button onClick={handleSkipForward}>
+          <button className="transparent-button" type="button" onClick={handleSkipForward}>
             <BsSkipForward />
           </button>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default WaveSurferComponent;

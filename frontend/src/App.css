@@ -13,6 +13,19 @@
   }
 }
 
+.transparent-button {
+  background-color: transparent !important;
+  border: none;
+  color: inherit; /* inherit text color */
+  cursor: pointer;
+  padding: 5; /* remove padding */
+  font: inherit; /* inherit font */
+}
+
+.transparent-button:hover {
+  opacity: 0.7; /* adjust opacity on hover */
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
