@@ -1,0 +1,6 @@
+setuptools
+audiocraft
+pydub
+ipykernel
+jupyter
+Flask==3.0.3

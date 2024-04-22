@@ -1,0 +1,17 @@
+{
+  "name": "AIMusicGen",
+  "build": {
+    "context": "..",
+    "dockerfile": "./Dockerfile"
+  },
+  "settings": {
+	"python.pythonPath": "/app/python3"
+  },
+  "extensions": [
+	"ms-python.python"
+  ],
+  "forwardPorts": [
+  ],
+  "postCreateCommand": "",
+  "remoteUser": "root"
+}
