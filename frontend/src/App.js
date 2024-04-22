@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import WaveSurferComponent from './Components/Waveform'; // Assuming you rename the first component file to WaveSurferComponent.js
-import axios from 'axios';
+//import axios from 'axios';
 
 
 function App() {
@@ -66,6 +66,7 @@ function App() {
                 formData.append('audioInput', file);
             });
             console.log(formData.get('audioInput'))
+            /*
             await axios.post('http://localhost:5000/generate', {
                 textInput: textInputValue,
                 audioInput: formData.get('audioInput')
