@@ -12,8 +12,8 @@ const WaveSurferComponent = ({ url }) => {
     const waveformRef = useRef(null);
     let wavesurfer;
     const [playPause, setPlayPause] = useState();
-    const [textInput, setTextInput] = useState('');
-    const [channels, setChannels] = useState([]);
+    //const [textInput, setTextInput] = useState('');
+    //const [channels, setChannels] = useState([]);
 
 
     useEffect(() => {
