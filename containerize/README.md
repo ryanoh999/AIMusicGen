@@ -14,5 +14,5 @@ make sure you have [docker desktop](https://www.docker.com/products/docker-deskt
 
 **Click** Select Kernel ==> Existing Jupyter Server
 
-**Enter URL** (ex. http://127.0.0.1:8888/lab?token=33f359498611061365600410f2ab3e00f47e21e2ac261689)
+**Enter URL** (ex. `http://127.0.0.1:8888/lab?token=33f359498611061365600410f2ab3e00f47e21e2ac261689`)
 
