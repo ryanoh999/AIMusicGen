@@ -1,0 +1,6 @@
+torch==2.1.0
+setuptools
+torchvision==0.16
+audiocraft
+pydub
+Flask==3.0.3
