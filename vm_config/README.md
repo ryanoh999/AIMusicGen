@@ -1,1 +1,1 @@
-`source vm_config.sh`
+`$ source vm_config.sh`
