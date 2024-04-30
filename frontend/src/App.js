@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import WaveSurferComponent from './Components/Waveform'; // Assuming you rename the first component file to WaveSurferComponent.js
-//import axios from 'axios';
+import axios from 'axios';
 
 
 function App() {
@@ -60,39 +60,43 @@ function App() {
     const handleGenerate = async () => {
         try {
             const textInputValue = document.getElementById('text_input').value;
-            const formData = new FormData();
-            channels.forEach((channel) => {
-                let file = channel.file
-                formData.append('audioInput', file);
-            });
-            console.log(formData.get('audioInput'))
-            /*
-            await axios.post('http://localhost:5000/generate', {
-                textInput: textInputValue,
-                audioInput: formData.get('audioInput')
-            });
-            /*await fetch('http://localhost:5000/generate',
-            {
-              method: 'post',
-              body: formData,
-            }
-          );
-             */   
+            const form = new FormData();
+            const files = document.getElementById('wavinp').files;
+            for (let i = 0; i < files.length; i++) {
+                //let blob = await fetch(channel.file).then(r => r.blob());
+                form.append('audioInput', files[i]);
+            };
+            form.append('textInput', textInputValue)
+            console.log(form.get('textInput'))
+            
+            const response = await fetch('http://localhost:5000/generate', {
+                method: 'POST',
+                //textInput: textInputValue,
+                body: form
+            }); 
+            if (response.ok) {
+                // Parsing response blob
+                const responseData = await response.blob();
+            setChannels(prevChannels => [
+                    ...prevChannels,
+                    { name: 'Generated Audio', file: URL.createObjectURL(responseData) }
+                ]);
             console.log('Text input sent successfully');
             // Optionally, you can clear the text input after sending it
             setTextInput('');
-            
+            }    
         } catch (error) {
             console.error('Error sending text input:', error);
-        }
+        
     };
-
+    }
     return (
         <div>
             <h1>WavMakr v0.0.1 (in development)</h1>
-            <label for="text_input">Text Input:</label>
-            <input type="text" id="text_input" name="text_input" />
-
+            <label htmlFor="text_input">Text Input:</label>
+            <form method="post">
+                <input type="text" id="text_input" name="text_input" />
+            </form>
                 <h2>Tracks</h2>
                 <ul id="channels-list">
                     {channels.map((channel, index) => (
@@ -101,9 +105,11 @@ function App() {
 
                             <WaveSurferComponent url={channel.file} />
                             <div className="App">
-                                <h2> {channel.name} </h2>
-                                <input type="file" accept=".wav, .mp3" onChange={(event) => handleUpload(index, event.target.files[0])} />
+                            <form method="post">
+                                <h2>{channel.name}</h2>
+                                <input type="file" id='wavinp' accept=".wav, .mp3" name='wav_input' onChange={(event) => handleUpload(index, event.target.files[0])} />
                                 <img src={file} />
+                            </form>
                             </div>
                             <button type="button" onClick={() => handleDeleteChannel(index)}>Delete</button>
                         </li>
