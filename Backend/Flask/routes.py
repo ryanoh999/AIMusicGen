@@ -62,13 +62,10 @@ def generate_text():
             # Closing both files
             wave_object.close()
 
-        generate(model, [text], out_path='./outputs/file', melody=output_wave_file)
-        with wave.open('./outputs/file', 'rb') as wav_file:
+        generate(model, [text], out_path='./outputs/', melody=output_wave_file)
+        with wave.open('./outputs/file_0.wav', 'rb') as wav_file:
             blob = wav_file.readframes(wav_file.getnframes())
         output_wave_file.close()
-        #data = request.json
-        #text_input = data.get('textInput')
-        #generate(text, files)
         print('Received text input:', text)
 
         return Response(blob, mimetype='application/octet-stream')
