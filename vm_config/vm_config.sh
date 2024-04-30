@@ -10,6 +10,8 @@ sudo apt install python3-pip
 
 sudo apt install python3-venv
 
+sudo apt install git-all
+
 echo 'python installed'
 
 python3 -m venv mg_env
