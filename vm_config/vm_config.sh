@@ -12,6 +12,8 @@ sudo apt install python3-venv
 
 sudo apt install git-all
 
+sudo apt install npm
+
 echo 'python installed'
 
 python3 -m venv mg_env
