@@ -44,4 +44,8 @@ echo 'dependencies installed'
 
 cd ../Backend/Flask
 
+mkdir outputs
+
+mkdir inputs
+
 python3 routes.py
