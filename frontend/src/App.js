@@ -69,7 +69,7 @@ function App() {
             form.append('textInput', textInputValue)
             console.log(form.get('textInput'))
             
-            const response = await fetch('http://0.0.0.0:5000/generate', {
+            const response = await fetch('http://34.16.142.30:5000/generate', {
                 method: 'POST',
                 //textInput: textInputValue,
                 body: form
