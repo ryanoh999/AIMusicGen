@@ -13,6 +13,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['CONTENT_TYPE'] = 'multipart/form-data'
 
 model = load_model()
+print('Model Loaded')
 
 @app.route('/')
 def index():
@@ -20,6 +21,7 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def generate_text():
+    print('input received')
     if request.method == 'POST':
         files = request.files.getlist('audioInput')
         text = request.form.get('textInput')
@@ -62,12 +64,14 @@ def generate_text():
             # Closing both files
             wave_object.close()
 
+        print('Generate function called')
         generate(model, [text], out_path='./outputs/', melody=output_wave_file)
+        
         with wave.open('./outputs/file_0.wav', 'rb') as wav_file:
             blob = wav_file.readframes(wav_file.getnframes())
         output_wave_file.close()
         print('Received text input:', text)
-
+        
         return Response(blob, mimetype='application/octet-stream')
         # Optionally, you can return a response to the client
         #return send_file('output.wav', mimetype='audio/wav')
