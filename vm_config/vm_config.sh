@@ -12,10 +12,6 @@ sudo apt install python3-venv
 
 sudo apt install git-all
 
-sudo apt install npm
-
-npm i
-
 echo 'python installed'
 
 python3 -m venv mg_env
@@ -30,4 +26,22 @@ sudo python3 install_gpu_driver.py
 
 pip3 install -r requirements.txt
 
+sudo apt install npm
+
+cd ../frontend
+
+npm i
+
+npm install axios
+
+npm install react-icons
+
+npm install wavesurfer.js
+
+npm run build
+
 echo 'dependencies installed'
+
+cd ../Backend/Flask
+
+python3 routes.py
