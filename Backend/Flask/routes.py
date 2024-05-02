@@ -49,7 +49,7 @@ def generate_text():
             compname = wave_object.getcompname()
 
             # Creating a new wave file for writing
-            output_wave_file = wave.open('output.wav', 'w')
+            output_wave_file = wave.open('/inputs/input.wav', 'w')
 
             # Setting parameters for the output wave file
             output_wave_file.setnchannels(nchannels)
@@ -60,21 +60,21 @@ def generate_text():
 
             # Writing data from the wave_open object to the output wave file
             output_wave_file.writeframes(wave_object.readframes(nframes))
-
+            output_wave_file.close()
             # Closing both files
             wave_object.close()
 
         print('Generate function called')
-        generate(model, [text], out_path='./outputs/', melody=output_wave_file)
+        generate(model, [text], out_path='./outputs/', melody='/inputs/input.wav')
         
-        with wave.open('./outputs/file_0.wav', 'rb') as wav_file:
-            blob = wav_file.readframes(wav_file.getnframes())
+        with wave.open('./outputs/_0.wav', 'rb') as wav_file:
+            blob = io.BytesIO(wav_file.readframes(wav_file.getnframes()))
         output_wave_file.close()
         print('Received text input:', text)
-        
-        return Response(blob, mimetype='application/octet-stream')
+
+        #return Response('./outputs/_0.wav', mimetype='audio/wav')
         # Optionally, you can return a response to the client
-        #return send_file('output.wav', mimetype='audio/wav')
+        return send_file('./outputs/_0.wav', mimetype='audio/wav')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
