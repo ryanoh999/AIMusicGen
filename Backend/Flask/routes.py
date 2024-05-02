@@ -4,6 +4,7 @@ import soundfile
 import urllib.request
 import requests
 import io
+import time
 from gen_functions import *
 
 from flask_cors import CORS, cross_origin
@@ -23,11 +24,12 @@ def index():
 def generate_text():
     print('input received')
     if request.method == 'POST':
-        files = request.files.getlist('audioInput')
         text = request.form.get('textInput')
         print(text)
-        for file in files:
-            wave_object = wave.open(file, 'rb')
+        #for file in files:
+        if request.files.getlist('audioInput'):
+            files = request.files.getlist('audioInput')
+            wave_object = wave.open(files[-1], 'rb')
             nchannels = wave_object.getnchannels()
             sampwidth = wave_object.getsampwidth()
             framerate = wave_object.getframerate()
@@ -64,8 +66,11 @@ def generate_text():
             # Closing both files
             wave_object.close()
 
-        print('Generate function called')
-        generate(model, [text], out_path='./outputs/', melody='/inputs/input.wav')
+            print('Generate function called')
+            generate(model, [text], out_path='./outputs/', melody='/inputs/input.wav')
+        else:
+            print('Generate function called -- text only')
+            generate(model, [text], out_path='./outputs/')
         
         with wave.open('./outputs/_0.wav', 'rb') as wav_file:
             blob = io.BytesIO(wav_file.readframes(wav_file.getnframes()))
@@ -75,6 +80,8 @@ def generate_text():
         #return Response('./outputs/_0.wav', mimetype='audio/wav')
         # Optionally, you can return a response to the client
         return send_file('./outputs/_0.wav', mimetype='audio/wav')
-
+        
+        #time.sleep(5)
+        #return send_file('./static/wav_files/Hako sample.wav', mimetype='audio/wav')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

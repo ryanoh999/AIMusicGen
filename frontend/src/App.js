@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import WaveSurferComponent from './Components/Waveform'; // Assuming you rename the first component file to WaveSurferComponent.js
-import axios from 'axios';
-
+import logo from './Components/wavmakr-logo.png';
+import {
+    BsTrashFill,
+    BsCloudUploadFill,
+  } from "react-icons/bs";
+//import { OrbitProgress } from 'react-loading-indicators'
+import "./App.css"
 
 function App() {
     const [textInput, setTextInput] = useState('');
     const [channels, setChannels] = useState([]);
     const [file, setFile] = useState();
+    const [loading, setLoading] = useState(false);
 
     const handleAddChannel = () => {
         const newChannelName = prompt('Enter the name of the new channel:');
@@ -59,17 +65,20 @@ function App() {
 
     const handleGenerate = async () => {
         try {
+            setLoading(true);
             const textInputValue = document.getElementById('text_input').value;
             const form = new FormData();
-            const files = document.getElementById('wavinp').files;
-            for (let i = 0; i < files.length; i++) {
-                //let blob = await fetch(channel.file).then(r => r.blob());
-                form.append('audioInput', files[i]);
-            };
+            if (document.getElementById('wavinp')) {
+                const files = document.getElementById('wavinp').files;
+                for (let i = 0; i < files.length; i++) {
+                    //let blob = await fetch(channel.file).then(r => r.blob());
+                    form.append('audioInput', files[i]);
+                };
+            }
             form.append('textInput', textInputValue)
             console.log(form.get('textInput'))
             
-            const response = await fetch('http://34.16.142.30:5000/generate', {
+            const response = await fetch('http://34.125.155.231:5000/generate', {
                 method: 'POST',
                 //textInput: textInputValue,
                 body: form
@@ -77,52 +86,65 @@ function App() {
             if (response.ok) {
                 // Parsing response blob
                 const responseData = await response.blob();
+                console.log(responseData)
+            /*
             setChannels(prevChannels => [
                     ...prevChannels,
                     { name: 'Generated Audio', file: URL.createObjectURL(responseData) }
                 ]);
+            */
+            const newChannel = { name: 'Generated Audio', file: URL.createObjectURL(responseData) };
+        
+            setChannels(prevChannels => [...prevChannels, newChannel]);
             console.log('Text input sent successfully');
             // Optionally, you can clear the text input after sending it
             setTextInput('');
             }    
         } catch (error) {
             console.error('Error sending text input:', error);
-        
+        } finally {
+            setLoading(false); // Set loading back to false after request completes
+            
     };
     }
     return (
-        <div>
-            <h1>WavMakr v0.0.1 (in development)</h1>
-            <label htmlFor="text_input">Text Input:</label>
+        <div className="app-container" style={{ backgroundColor: 'lightblue' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'dodgerblue' }}>
+        <div className="header">
+            <img src={logo} alt="Logo" className="logo"/>
+        </div>
+        {loading && <div>Cooking...</div>}
+            <label htmlFor="text_input">Enter a prompt (e.g. banjos strumming):</label>
             <form method="post">
-                <input type="text" id="text_input" name="text_input" />
+                <input type="text" id="text_input" name="text_input" className='prompt'/>
             </form>
-                <h2>Tracks</h2>
                 <ul id="channels-list">
                     {channels.map((channel, index) => (
                         <li key={index}>
-                            <input type="checkbox" id="{{ channel.name }}" name="selected_channels" value="{{ channel.name }}"/>
-
+                            <h2>{channel.name}</h2>
+                            <button className="transparent-button" onClick={() => handleDeleteChannel(index)}><BsTrashFill /></button>
                             <WaveSurferComponent url={channel.file} />
                             <div className="App">
                             <form method="post">
-                                <h2>{channel.name}</h2>
+                                
                                 <input type="file" id='wavinp' accept=".wav, .mp3" name='wav_input' onChange={(event) => handleUpload(index, event.target.files[0])} />
                                 <img src={file} />
                             </form>
                             </div>
-                            <button type="button" onClick={() => handleDeleteChannel(index)}>Delete</button>
+                            
                         </li>
                     ))}
                 </ul>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '10%' }}>
                 <button type="button" onClick={handleAddChannel}>Add Track</button>
-                <button type="button" onClick={handlePlayAll}>Play All</button>
                 <button type="button" onClick={handleGenerate}>Generate</button>
+                </div>
             
-            
+                </div>    
         </div>
     );
 }
 
 export default App;
 //            <form action="/submit" method="post"> //</form>
+//<input type="checkbox" id="{{ channel.name }}" name="selected_channels" value="{{ channel.name }}"/>
