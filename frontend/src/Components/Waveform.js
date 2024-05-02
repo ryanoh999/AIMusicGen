@@ -24,7 +24,7 @@ const WaveSurferComponent = ({ url }) => {
           progressColor: "#F90",
           url: url,
           dragToSeek: true,
-          //width: "35vw",
+          width: "50vw",
           hideScrollbar: true,
           //normalize: true,
           barGap: 1,
@@ -44,7 +44,8 @@ const WaveSurferComponent = ({ url }) => {
 
         return () => {
           if (wavesurfer) {
-            wavesurfer.destroy();
+            //wavesurfer.destroy();
+            console.log('ws')
           }
         };
       }

@@ -1,5 +1,22 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .App {
   text-align: center;
+}
+
+.App-container {
+  background-color: dodgerblue;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.App-footer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .App-logo {
@@ -11,6 +28,21 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.channel-details {
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.logo {
+  width: 200px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 20px;
 }
 
 .transparent-button {
@@ -41,6 +73,22 @@
   color: #61dafb;
 }
 
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-track-btn {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.generate-btn {
+  background-color: #007bff; /* Blue */
+  color: white;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -48,4 +96,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#text_input {
+  width: 300px; /* Adjust the width as needed */
+  padding: 10px; /* Optional: Add padding for better appearance */
 }
