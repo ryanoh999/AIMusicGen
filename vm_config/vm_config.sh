@@ -48,4 +48,4 @@ mkdir outputs
 
 mkdir inputs
 
-python3 routes.py
+nohup python3 routes.py &
